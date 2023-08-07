@@ -7,7 +7,7 @@ Animico is a simple tweening library for Unity created for personal purposes.
 ## Currently available methods:
 <br>
 
-Anix, AniY, Aniz
+AniX, AniY, AniZ
   - animate objects or UI elements positions on the specified axis
 
 AniScaleX, AniScaleY, AniScaleZ, AniScale
