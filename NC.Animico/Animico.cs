@@ -547,6 +547,45 @@ namespace NC.Animico
             onComplete?.Invoke();
         }
         
+        /// <summary>
+        /// Changes the orthographic size of a camera over time.
+        /// </summary>
+        /// <param name="target">The target camera to change the orthographic size.</param>
+        /// <param name="endSize">The target size to change to.</param>
+        /// <param name="duration">The duration of the size change in seconds.</param>
+        /// <param name="easingFunction">An optional easing function for the size change. Defaults to null (linear interpolation).</param>
+        /// <param name="onComplete">An optional on completion callback.</param>
+        public static void AniOrthoSize(Camera target, float endSize, float duration, System.Func<float, float> easingFunction = null, Action onComplete = null)
+        {
+            AnimicoHelper.Instance.StartCoroutine(AniOrthoSizeCoroutine(target, endSize, duration, easingFunction, onComplete));
+        }
+
+        private static IEnumerator AniOrthoSizeCoroutine(Camera target, float endSize, float duration, System.Func<float, float> easingFunction = null, Action onComplete = null)
+        {
+            float startSize = target.orthographicSize;
+            float time = 0;
+
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                float t = time / duration;
+
+                if (easingFunction != null)
+                    t = easingFunction(t);
+
+                float newSize = Mathf.Lerp(startSize, endSize, t);
+                target.orthographicSize = newSize;
+
+                yield return null;
+            }
+
+            target.orthographicSize = endSize;
+
+            // Call the completion callback, if one was provided
+            onComplete?.Invoke();
+        }
+
+        
         #endregion
 
         public class AnimicoHelper : MonoBehaviour
